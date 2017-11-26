@@ -1,0 +1,132 @@
+  body {
+        background-color: #fffbf0;
+        margin: 0px;
+    }
+    hr {
+        border: 0;
+        height: 1px;
+        background: lightgray;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    #bodyDiv {
+        padding: 0 10% 0 10%;
+    }
+    #headerDiv h1 {
+        font-size: 3em;
+    }
+    #headerBar {
+        background-color: #F5C358;
+        height: 10px;
+    }
+    
+    
+ 
+     
+        /*CSS for Navbar*/
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+        border-right: 1px solid #bbb;
+    }
+
+    li a, .dropbtn {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover, .dropdown:hover .dropbtn {
+        background-color: #111;
+    }
+
+    li:last-child {
+        border-right: none;
+    }
+
+    li.dropdown {
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    #login {
+        float: right;
+        background-color: #F1B82D;
+    }
+    #alogin:hover {
+        background-color: #F1B82D;
+    }
+    /*END Navbar CSS*/
+    
+    #contentDiv {
+        margin: 5% 0 0 0;
+        border-top: 5px solid #F5C358; 
+        box-shadow: 0 0 10px lightgray;
+        background-color: #FFFFFF;
+        padding: 2% 10% 2% 10%;
+    }
+    #contentDiv .center{
+        text-align: center;
+    }
+    #footerDiv {
+        background-color: #222222;
+        color: #CCCCCC;
+        margin-top: 5%;
+        padding: 1% 10% 1% 10%;
+    }
+    /*CSS FOR FORM*/
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    input[type=submit], input[type=button] {
+    width: 100%;
+    background-color: #F1B82D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #F5C358;
+}

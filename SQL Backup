@@ -1,0 +1,18 @@
+INSERT INTO Students (StudentID, First_Name, Last_Name) values ('14260440', 'Vazquez', 'Antonio');
+INSERT INTO Schools (School_Name, City, State, School_Type) values ('UMKC School of Dentistry', 'Kansas City', 'Missouri', 'Dental');
+INSERT INTO Applications (StudentID, School_Name) values ('14260440', 'UMKC School of Dentistry');
+
+INSERT INTO Students (StudentID, First_Name, Last_Name) values ('14260110', 'Sanders', 'Kelley');
+INSERT INTO Applications (StudentID, School_Name) values ('14260110', 'UMKC School of Dentistry');
+INSERT INTO Schools (School_Name, City, State, School_Type) values ('New York College of Podiatric Medicine', 'New York', 'New York', 'Podiatric');
+INSERT INTO Applications (StudentID, School_Name) values ('14260440', 'New York College of Podiatric Medicine');
+
+
+Select * from Schools;
+select * from Students;
+Select * from Applications;
+
+Select a.StudentID, a.First_Name, a.Last_Name, b.School_Name, b.City, b.State, b.School_Type
+From Students AS a INNER JOIN Applications ON a.StudentID = Applications.StudentID
+INNER JOIN Schools AS b ON b.School_Name = Applications.School_Name 
+ORDER BY a.Last_Name ASC;
