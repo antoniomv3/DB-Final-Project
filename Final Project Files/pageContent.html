@@ -15,44 +15,121 @@
 </div>
 
 <div id="formContent">
-<h2 class="center">DEADLINE: MAY 19, 2017 BY 5 PM</h2>
+<h2 class="center">DEADLINE: MAY 18, 2018 BY 5 PM</h2>
 <h1 class="center">Committee Interview Applicant Information Form</h1>
 <form>
-    <label for="fname">First Name:</label>
-    <input type="text" id="fname" name="firstName">
-    <label for="lname">Last Name:</label>
-    <input type="text" id="lname" name="lastName">
-    <label for="stuID">MU Student ID#:</label>
-    <input type="text" id="stuID" name="studentID" placeholder="8 digit MUID">
-    <label for="address">Local Address:</label>
-    <input type="text" id="address" name="address">
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" name="phone" placeholder="Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.">
-    <label for="email">Email:</label>
-    <input type="text" id="email" name="email" placeholder="Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.">
-    <label for="state">Legal resident of what state</label>
-    <input type="text" id="state" name="state">
-    <label for="candidate">Candidate For:</label>
-    <select id="candidate" name="candidate">
-        <option value="Allo">Allopathic Medicine</option>
-        <option value="Osteo">Osteopathic Medicine</option>
-        <option value="Dent">Dentistry</option>
-    </select>
-    <label>Bryant Scholar:</label>
-    <input type="radio" name="bryant" value="yes"> Yes
-    <input type="radio" name="bryant" value="no"> No
-    <br><label>Early Decision:</label>
-    <input type="radio" name="earlydecision" value="yes"> Yes
-    <input type="radio" name="earlydecision" value="no"> No
-    <br><label>MD/PHD Applicant:</label>
-    <input type="radio" name="mdphd" value="yes"> Yes
-    <input type="radio" name="mdphd" value="no"> No
-    <br><label>Enrolled at MU for FS2017?</label>
-    <input type="radio" name="enrolled" value="yes"> Yes
-    <input type="radio" name="enrolled" value="no"> No
-    <br><label>Is this the first time you are applying to health professions schools?</label>
-    <input type="radio" name="firstapply" value="yes"> Yes
-    <input type="radio" name="firstapply" value="no"> No
-    <input type="submit" value="Continue">   
+   <div class="form-row">
+      <div class="form-group col">
+         <label for="fname">First Name:</label>
+         <input type="text" class="form-control" id="fname" name="firstName">
+      </div>
+      <div class="form-group col">
+         <label for="lname">Last Name:</label>
+         <input type="text" class="form-control" id="lname" name="lastName">
+      </div>
+   </div>
+   <div class="form-row">
+      <div class="form-group col-md-4">
+         <label for="stuID">MU Student ID#:</label>
+         <input type="text" class="form-control" id="stuID" name="studentID">
+         <small id="stuIDHelp" class="form-text text-muted">Your 8 digit MU Student ID</small>
+      </div>
+      <div class="form-group col-md-8">
+         <label for="address">Local Address:</label>
+         <input type="text" class="form-control" id="address" name="address">
+      </div>
+   </div>
+   <div class="form-row">
+      <div class="form-group col-md-4">
+         <label for="phone">Phone:</label>
+         <input type="text" class="form-control" id="phone" name="phone">
+      </div>
+      <div class="form-group col-md-8">
+         <label for="email">Email:</label>
+         <input type="email" class="form-control" id="email" name="email">
+         <small id="phoneInfo" class="form-text text-muted">Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.</small>
+      </div>
+   </div>
+   <div class="form-row">
+      <div class="form-group col">
+         <label for="state">Legal resident of what state</label>
+         <input type="text" class="form-control" id="state" name="state">
+      </div>
+      <div class="form-group col">
+         <label for="candidate">Candidate For:</label>
+         <select id="candidate" class="form-control" name="candidate">
+            <option value="Allo">Allopathic Medicine</option>
+            <option value="Osteo">Osteopathic Medicine</option>
+            <option value="Dent">Dentistry</option>
+         </select>
+      </div>
+   </div>
+   <div class="form-group row">
+      <label class="col-md-3 form-control-label label-inline">Bryant Scholar:</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="bryant" value="yes" required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="bryant" value="no" required> No 
+         </label>
+      </div>
+      <label class="col-md-3 form-control-label label-inline">Early Decision:</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="earlydecision" value="yes" required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="earlydecision" value="no" required> No 
+         </label>
+      </div>
+   </div>
+   <div class="form-group row">
+      <label class="col-md-3 form-control-label label-inline">MD/PHD Applicant:</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="mdphd" value="yes" required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="mdphd" value="no" required> No 
+         </label>
+      </div>
+      <label class="col-md-3 form-control-label label-inline">Enrolled at MU for FS2017?</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="enrolled" value="yes" required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="enrolled" value="no" required> No 
+         </label>
+      </div>
+   </div>
+   <div class="form-group row">
+      <label class="col-md-9 form-control-label label-inline">Is this the first time you are applying to health professions schools?</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="firstapply" value="yes" required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="firstapply" value="no" required> No 
+         </label>
+      </div>
+   </div>
+   <h3 class="center">List of Schools</h2>
+    <p>Please remember:</p>
+    <ul>
+        <li>All letters must be received before the packet will be transmitted.</li>
+        <li class="bold">Once a packet of letters is sent, any additional submissions will cost $10.</li>
+        <li>Letters will not be sent until payment is recieved and you have submitted your AMCAS/AACOMAS/TMDSAS/AADSAS application.</li>
+    </ul>
+    <input type="submit" class="btn btn-primary" value="Submit">
 </form>
+</div>
+
+<div id="schoolContent">
+<h2>Will be worked on later</h2>
+</div>
+
+<div id="viewContent">
+<h2>Will be worked on later</h2>
 </div>

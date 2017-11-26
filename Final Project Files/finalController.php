@@ -5,7 +5,6 @@ require('finalView.php');
 class finalController {
     private $model;
     private $view;
-    
     private $nav = '';
     
     public function __construct() {
@@ -20,18 +19,15 @@ class finalController {
     }
     
     public function run(){
-        /*$this->processNav();*/
-        
-        switch($this->view) {
-             default: 
-                 print $this->nav;
-         }
+        $navDirection = $this->processNav();
+        print $this->view->pageView($navDirection);
+    
     }
     
-    
-    /*private function processNav() {
-        $this->model->determineNav($_GET['nav']);
-    }*/
+    private function processNav() {
+        $navDirection = $this->model->determineNav($this->nav);
+        return($navDirection);
+    }
 }
 
 
