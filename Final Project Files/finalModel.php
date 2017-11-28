@@ -31,6 +31,7 @@ class finalModel {
    private function getFormOptions(){
       $mysqli = $this->initDatabaseConnection();
       $options = $this->prepareFormData($mysqli);
+      mysqli_close($mysqli);
       return $options;
    }
    
