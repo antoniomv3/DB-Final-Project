@@ -41,19 +41,33 @@
 		$password = empty($_POST['password']) ? '' : $_POST['password'];
 	
 
-		if ($username == "test" && $password == "pass") {
+	/*	if ($username == "test" && $password == "pass") {
 			// Instead of setting a cookie, we'll set a key/value pair in $_SESSION
 			$_SESSION['loggedin'] = $username;
 			header("Location: page1.php");
 			exit;
 		} 
-		   
+		   */
+       
+       include "../inc/dbinfo.inc";
+      $mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+       if($mysqli->connection_error){
+          $error = "Error: " . $mysqli->connection_errno . ' ' . $mysqli->connection_error;
+          require "login_form.php";
+          exit;
+       }
+       
+       $query = "select id from Users where username = '$username' and password = '$password'";
+       print $query;
+       exit;
+       
+       
         // Else, there was no result
-        else {
+        /*else {
           $error = 'Login Error: Please contact the system administrator.';
           require "login_form.php";
           exit;
-        }
+        }*/
 	}
 	
 	function login_form() {

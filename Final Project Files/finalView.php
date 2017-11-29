@@ -2,9 +2,11 @@
 class finalView{
     private $address = 'index.php/';
    
-    public function pageView($source, $formOptions){
+    public function pageView($source, $formOptions, $logStatus){
       $this->addFormOptions($formOptions); 
+      $navBarData = $this->addNavData($logStatus);
       $html = <<<EOT
+<!doctype html>
 <html>
     
 <head>
@@ -17,28 +19,26 @@ class finalView{
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" type="text/css" href="finalStyle.css">
+    <script src="finalScripts.js"></script>
 </head>
 
 <body>
-    <div id="headerBar"></div>
-    <div id="bodyDiv">
-    <div id="headerDiv">
-        <h1>MedOpp Logo</h1>
-    </div>
-    <div id="navBar">
-        <ul>
-            <li><a href="{$address}?nav=home">Home</a></li>
-            <li><a href="{$address}?nav=school">School Info</a></li>
-            <li><a href="{$address}?nav=apply">Application</a></li>
-            <li><a href="{$address}?nav=view">View Forms</a></li>
-            <li id="login"><a href="#" id="alogin">Login</a></li>
-        </ul>
-    </div>
-    <div id="contentDiv">{$this->{$source}}</div>
-    </div>
-     <div id="footerDiv">
-        <h3>MedOpp Advising Office</h3>
-        <p>Phone: 573.882.3893</p>
+   <div id="headerBar"></div>
+   <div id="bodyDiv">
+   <div id="headerDiv">
+      <h1>MedOpp Logo</h1>
+   </div>
+   <div class="navBar">
+      <a href="{$address}?nav=home">Home</a>
+      <a href="{$address}?nav=school">School Info</a>
+      <a href="{$address}?nav=apply">Application</a>
+      {$navBarData}
+   </div>
+   <div id="contentDiv">{$this->{$source}}</div>
+   </div>
+      <div id="footerDiv">
+         <h3>MedOpp Advising Office</h3>
+         <p>Phone: 573.882.3893</p>
          <p>Site: <a href="http://premed.missouri.edu">premed.missouri.edu</a></p>
         
     </div>
@@ -49,6 +49,15 @@ EOT;
     }
    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   /*<div class="dropdownDiv">
+         <button onclick="navBarDrop()" class="dropButton">Admin</button>
+            <div id="myDrop" class="drop-content">
+               <a href="{$address}?nav=view">View Forms</a>
+               <a href="{$address}?nav=logout">Logout</a>
+            </div>
+      </div>*/
+   
+   
    
    private function addFormOptions($formOptions){
       $this->formContent .= 
@@ -89,6 +98,27 @@ EOT;
       $this->formContent .= '<input type="submit" class="btn btn-primary" value="Submit"></form>';   
    }
 
+   private function addNavData($logStatus){
+      switch($logStatus){
+         case "false": 
+            $navBarData = "<a href='{$address}?nav=login' id='loginButton'>Login</a>";
+            break;
+         case "true":
+            $navBarData = 
+            "<div class='dropdownDiv'>
+               <button onclick='navBarDrop()' class='dropButton'>Admin</button>
+                  <div id='myDrop' class='drop-content'>
+                     <a href='{$address}?nav=view'>View Forms</a>
+                     <a href='{$address}?nav=logout'>Logout</a>
+                  </div>
+            </div>";
+            break;
+         default: 
+            $navBarData = "<a href='{$address}?nav=login' id='loginButton'>Login</a>";
+            break;
+      }
+      return $navBarData;
+   }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
    var $homeContent = 
@@ -220,7 +250,24 @@ EOT;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+   var $loginContent = 
+'<h2 class="center">Please Sign In</h2>
+<form action="index.php" method="post">
+   <input type="hidden" name="action" value="login">
+   <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" name="username" id="username>
+   </div>
+   <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" name="pwd" id="pwd">
+   </div>
+   <button type="submit" class="btn btn-default">Submit</button>
+</form>';
+   
+   
+   
+   
    var $schoolContent = '<h2>Will be worked on later</h2>';
    var $viewContent = '<h2>Will be worked on later</h2>';
 }

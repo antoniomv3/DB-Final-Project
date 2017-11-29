@@ -8,6 +8,7 @@ class finalModel {
    public function preparePageContent($nav){
       $navDirection = '';
       $formOptions = '';
+      $logStatus = 'false';
          switch($nav){
             case "home":
                $source = 'homeContent';
@@ -17,22 +18,24 @@ class finalModel {
                break;
             case "apply":
                $source = 'formContent';
-               $formOptions = $this->getFormOptions();
+               $formOptions = $this->prepareFormData($this->initDatabaseConnection());
                break;
             case "view":
                $source = 'viewContent';
                break;
+            case "login":
+               $source = 'loginContent';
+               break;
             default:
                $source = 'homeContent';
          }
-         return array($source, $formOptions);
+         return array($source, $formOptions, $logStatus);
    }
    
-   private function getFormOptions(){
-      $mysqli = $this->initDatabaseConnection();
-      $options = $this->prepareFormData($mysqli);
-      mysqli_close($mysqli);
-      return $options;
+   ////WORK IN PROGRESS
+   public function processLogin($username, $password) {
+         $mysqli = initDatabaseConnection();
+         return true;
    }
    
    private function initDatabaseConnection() {
@@ -42,12 +45,9 @@ class finalModel {
    }
    
    private function prepareFormData($mysqli) {
-      $sql="Select School_Name FROM Schools";
-      $result = $mysqli->query($sql);
-      
+      $query="SELECT School_Name FROM Schools";
+      $result = $mysqli->query($query);
       $options = '';
-      $row = mysqli_fetch_array($result, MYSQLI_NUM);
-      
       
       while($row = $result->fetch_array()){
          $rows[] = $row;
@@ -56,6 +56,8 @@ class finalModel {
       foreach($rows as $row){
          $options .= '<option value = "' . $row['School_Name'] . '">' . $row['School_Name'] . '</option>';
       }
+      $result->free();
+      $mysqli->close();
       return $options;
    }   
 }

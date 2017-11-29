@@ -12,112 +12,137 @@
     
     
 <style>
-    body {
-        background-color: #fffbf0;
-        margin: 0px;
-    }
-    hr {
-        border: 0;
-        height: 1px;
-        background: lightgray;
-    }
-    .bold {
-        font-weight: bold;
-    }
-    #bodyDiv {
-        padding: 0 10% 0 10%;
-    }
-    #headerDiv h1 {
-        font-size: 3em;
-    }
-    #headerBar {
-        background-color: #F5C358;
-        height: 10px;
-    }
-    
-    
+       body {
+      background-color: #fffbf0;
+      margin: 0px;
+   }
+   hr {
+      border: 0;
+      height: 1px;
+      background: lightgray;
+   }
+   .bold {
+      font-weight: bold;
+   }
+   #bodyDiv {
+      padding: 0 10% 0 10%;
+   }
+   #headerDiv h1 {
+      font-size: 3em;
+   }
+   #headerBar {
+      background-color: #F5C358;
+      height: 10px;
+   }
  
-     
-        /*CSS for Navbar*/
-    #navBar ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
-
-    #navBar li {
-        float: left;
-        border-right: 1px solid #bbb;
-    }
-
-    #navBar li a {
-        display: inline-block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-    #navBar li a:hover {
-        background-color: #111;
-    }
-
-    #navBar li:last-child {
-        border-right: none;
-    }
-   
-    #navBar #login {
-        float: right;
-        background-color: #F1B82D;
-    }
-    #navBar #alogin:hover {
-        background-color: #F1B82D;
-    }
-    /*END Navbar CSS*/
+   /*CSS for Navbar*/
+   .navBar {
+      overflow: hidden;
+      background-color: #333;
+   }
+   .navBar a {
+       float: left;
+       color: white;
+       text-decoration: none;
+       padding: 14px 16px;
+       border-right: 1px solid #bbb;
+   }
+   .dropdownDiv{
+      float: right;
+      overflow: hidden;
+      background-color: #F1B82D; 
+   }
+   .dropdownDiv .dropButton {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 14px 16px;
+      background-color: inherit;
+      min-width: 150px;
+   }
+   .navBar a:hover {
+      background-color: #111;
+   }
+   .dropdownDiv:hover .dropButton {
+      background-color: #efb015;
+   }
+   .drop-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      width: 150px;
+      box-shadow: 0 0 10px #b2b2b2;
+      z-index: 1;
+   }
+   .drop-content a {
+      float: none;
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      width: 100%;
+      overflow: auto;
+   }
+   .drop-content a:hover {
+      background-color: #e5e5e5;
+   }
+   .show {
+      display: block;
+   }
+   /*END Navbar CSS*/
     
-    #contentDiv {
-        margin: 5% 0 0 0;
-        border-top: 5px solid #F5C358; 
-        box-shadow: 0 0 10px lightgray;
-        background-color: #FFFFFF;
-        padding: 2% 10% 2% 10%;
+   #contentDiv {
+      margin: 5% 0 0 0;
+      border-top: 5px solid #F5C358; 
+      box-shadow: 0 0 10px lightgray;
+      background-color: #FFFFFF;
+      padding: 2% 10% 2% 10%;
+   }
+   #contentDiv .center{
+      text-align: center;
     }
-    #contentDiv .center{
-        text-align: center;
-    }
-    #footerDiv {
-        background-color: #222222;
-        color: #CCCCCC;
-        margin-top: 5%;
-        padding: 1% 10% 1% 10%;
-    }
-    /*CSS FOR FORM*/
-    /*input[type=text], select {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }*/
-    input[type=submit], input[type=button] {
-    width: 100%;
-    background-color: #F1B82D;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+   #footerDiv {
+      background-color: #222222;
+      color: #CCCCCC;
+      margin-top: 5%;
+      padding: 1% 10% 1% 10%;
+   }
 
-input[type=submit]:hover {
-    background-color: #F5C358;
-}
-    </style>
+   input[type=submit], input[type=button] {
+      width: 100%;
+      background-color: #F1B82D;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+   }
+
+   input[type=submit]:hover {
+      background-color: #F5C358;
+   }
+</style>
+<script>
+   function navBarDrop(){
+      document.getElementById("myDrop").classList.toggle("show");
+      window.onclick = function(event){
+         if(!event.target.matches('.dropButton')){
+            var dropdowns = document.getElementsByClassName("drop-content");
+            var i;
+            for(i = 0; i < dropdowns.length; i++) {
+               var openDropDown = dropdowns[i];
+               if (openDropDown.classList.contains('show')){
+                  openDropDown.classList.remove('show');
+               }
+            }
+            
+         }
+      }
+   }
+</script>
 </head>
 
 <body>
@@ -126,17 +151,22 @@ input[type=submit]:hover {
     <div id="headerDiv">
         <h1>MedOpp Logo</h1>
     </div>
-    <div id="navBar">
-        <ul>
-            <li><a href="">Home</a></li>
-            <li><a href="#">School Info</a></li>
-            <li><a href="#">Application</a></li>
-            <li><a href="#">View Forms</a></li>
-            <li id="login"><a href="#" id="alogin">Login</a></li>
-        </ul>
+    <div class="navBar">
+        
+      <a href="#">Home</a>
+      <a href="#">School Info</a>
+      <a href="#">Application</a>
+      <div class="dropdownDiv">
+         <button onclick="navBarDrop()" class="dropButton">Dropdown</button>
+            <div id="myDrop" class="drop-content">
+               <a href="#">Link 1</a>
+               <a href="#">Link 2</a>
+               <a href="#">Link 3</a>
+            </div>
+      </div>   
     </div>
     <div id="contentDiv"></div>
-    <script>$("#contentDiv").load("pageContent.html #viewContent");</script>
+    <script>$("#contentDiv").load("pageContent.html #homeContent");</script>
     </div>
      <div id="footerDiv">
         <h3>MedOpp Advising Office</h3>
