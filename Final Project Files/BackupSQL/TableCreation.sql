@@ -21,6 +21,13 @@ CREATE TABLE Applications (
     FOREIGN KEY (School_Name) REFERENCES Schools (School_Name)
 );
 
+CREATE TABLE Users (
+    username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    PRIMARY KEY (username)
+);
+
 drop table Students;
 drop table Schools;
 drop table Applications;
+drop table Users;
