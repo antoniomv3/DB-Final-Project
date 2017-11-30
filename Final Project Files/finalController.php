@@ -25,9 +25,10 @@ class finalController {
          case 'login':
             $this->handleLogin();
             break;
-         case 'logout':
-            $this->handleLogout();
-            break;
+         case 'ajaxRequest':
+            $response = '<div style="position:relative;height:0;padding-bottom:56.21%"><iframe src="https://www.youtube.com/embed/Q6B59wkGn_M?ecver=2" style="position:absolute;width:100%;height:100%;left:0" width="641" height="360" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe></div>';
+            echo $response;
+            exit;
          default:
             $this->runPage();
       }

@@ -13,3 +13,14 @@ function navBarDrop(){
       }
    }
 }
+
+$(document).ready(function(){
+   $("#loadButton").click(function(){
+      $.post(
+      "index.php",
+      {action: 'ajaxRequest'},
+      function(response, status){
+         $("#videoDiv").html(response);
+      });
+   });
+});

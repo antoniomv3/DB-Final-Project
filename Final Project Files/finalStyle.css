@@ -24,7 +24,7 @@
       background-color: #F5C358;
       height: 10px;
    }
- 
+
    /*CSS for Navbar*/
    .navBar {
       overflow: hidden;
@@ -101,7 +101,7 @@
       
    }
 
-   input[type=submit], input[type=button] {
+   input[type=submit], input[type=button], #loadButton {
       width: 100%;
       background-color: #F1B82D;
       color: white;
@@ -112,10 +112,18 @@
       cursor: pointer;
    }
 
-   input[type=submit]:hover {
-      background-color: #F5C358;
+   input[type=submit]:hover, #loadButton:hover {
+      background-color: #efb015;
    }
    #logo {
       width: 40%;
       height: 40%;
    }
+
+.schoolLogo {
+      height: 200px;
+}
+   
+.displayInline {
+   display: inline-block;
+}

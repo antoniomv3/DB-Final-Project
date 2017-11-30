@@ -132,6 +132,7 @@ EOT;
    var $formContent = 
 '<h2 class="center">DEADLINE: MAY 18, 2018 BY 5 PM</h2>
 <h1 class="center">Committee Interview Applicant Information Form</h1>
+<hr>
 <form>
    <input type="hidden" name="action" value="add"/>
    <div class="form-row">
@@ -241,6 +242,7 @@ EOT;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
    var $loginContent = 
 '<h2 class="center">Please Sign In</h2>
 <form action="index.php" method="post">
@@ -256,10 +258,59 @@ EOT;
    <button type="submit" class="btn btn-default">Submit</button>
 </form>';
    
+   var $unloggedContent = 
+'<br><br><h2 class="center">Sorry!</h2>
+<p class="center">You must be logged in to access this content!<p><br><br>';
    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
    
+   var $schoolContent = 
+'<h2 class="center">School Information</h2>
+<hr>
+<div>
+   <div class="displayInline">
+      <a href="https://apps.aamc.org/msar-ui/#/landing" target="_blank">
+         <img class="schoolLogo" src="Images/AAMC.jpeg" alt="AAMC logo">
+      </a>
+      <a href="http://www.aacom.org/become-a-doctor/us-coms" target="_blank">
+         <img class="schoolLogo" src="Images/AACOM.png" alt="AACOM logo">
+      </a>
+   </div>
+   <div class="displayInline">
+      <br><h2>Medicine</h2>
+      <p>Physicians treat and prevent human illness, disease and injury. There are two types of physicians: the M.D. (Doctor of Medicine) and the D.O. (Doctor of Osteopathic Medicine). Medical school programs are four years in length. At the end of four years, allopathic institutions grant the M.D. degree and osteopathic institutions grant the D.O. degree. You should examine the similarities and differences in training and practice. For more information, consult the links above, AAMC for Allopathic Medicine and aacom for Osteopathic Medicine.</p>
+   </div>
+</div>
+<div>
+   <div>
+      <a href="http://www.adea.org/dental_education_pathways/aadsas/Pages/PDS.aspx" target="_blank">
+         <img class="schoolLogo" src="Images/ADEA.png" alt="AADSAS logo">
+      </a>
+   </div>
+   <div>
+      <h2>Dentistry</h2>
+      <p>Dental school is four years in length for general practice. At the end of four years, a graduate earns a D.D.S., Doctor of Dental Surgery or a D.M.D., Doctor of Dental Medicine. The majority of dental schools award the D.D.S. degree; however, some award a D.M.D. degree. The education and degrees are the same. The AADSAS link above provides more information on dental programs.</p><br>
+   </div>
+</div>
+<div>
+   <div>
+      <a href="http://www.aacpm.org/colleges/" target="_blank" class="center">
+         <img class="schoolLogo" src="Images/AACPM.jpeg" alt="AACPM logo">
+      </a>
+   </div>
+   <div>
+      <br><h2>Podiatry</h2>
+      <p>A Doctor of Podiatric Medicine (DPM) specializes in the prevention, diagnosis, and treatment of foot disorders resulting from injury or disease. A DPM makes independent judgments, prescribes medications, and when necessary, performs surgery.</p>
+      <p>After completing four years of podiatric medical training, the podiatrist is required by most states to complete at least one year of postgraduate residency training. Surgically-based residencies can last from one to three years. State licensing requirements generally include graduation from an accredited college of podiatric medicine, passage of National Board examinations, and oral examinations. The AACPM link above provides more information on podiatric programs.</p>
+   </div>
+</div>
+<hr>
+<div id="videoDiv">
+   <button id="loadButton">Load Health School Tips Video</button>
+</div>';
    
-   var $schoolContent = '<h2>Will be worked on later</h2>';
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
    var $viewContent = '<h2>Will be worked on later</h2>';
 }
 ?>

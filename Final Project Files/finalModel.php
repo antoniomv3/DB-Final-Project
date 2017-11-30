@@ -7,10 +7,6 @@ class finalModel {
    public function __destruct(){
    }
    
-   public function test(){
-      echo $_SESSION['logStatus'];
-   }
-   
    public function preparePageContent($nav){
       $navDirection = '';
       $formOptions = '';
@@ -27,7 +23,10 @@ class finalModel {
                $formOptions = $this->prepareFormData($this->initDatabaseConnection());
                break;
             case "view":
-               $source = 'viewContent';
+               if($logStatus === 'true'){
+                  $source = 'viewContent';
+               }
+               else $source = 'unloggedContent';
                break;
             case "login":
                $source = 'loginContent';
