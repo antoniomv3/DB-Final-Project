@@ -1,7 +1,17 @@
 CREATE TABLE Students (
-	StudentID int NOT NULL,
     First_Name varchar(35) NOT NULL,
     Last_Name varchar(35) NOT NULL,
+    StudentID varchar(10) NOT NULL,
+    Local_Address varchar(255) NOT NULL,
+    Phone varchar(20),
+    Email varchar(64),
+    State varchar(64),
+    Candidate varchar(32),
+    Bryant_Status varchar(5),
+    ED_Status varchar(5),
+    MDPHD_Status varchar(5),
+	MU_Status varchar(5),
+    First_Status varchar(5),
     PRIMARY KEY (StudentID)
 );
 
@@ -14,7 +24,7 @@ CREATE TABLE Schools (
 );
 
 CREATE TABLE Applications (
-	StudentID int NOT NULL,
+	StudentID varchar(10) NOT NULL,
     School_Name varchar(255) NOT NULL,
     
     FOREIGN KEY (StudentID) REFERENCES Students (StudentID),
@@ -30,4 +40,3 @@ CREATE TABLE Users (
 drop table Students;
 drop table Schools;
 drop table Applications;
-drop table Users;

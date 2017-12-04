@@ -1,9 +1,28 @@
 <?php
 class finalView{
-    private $address = 'index.php/';
    
-    public function pageView($source, $formOptions, $logStatus){
-      $this->addFormOptions($formOptions); 
+   public function __construct(){
+      session_start();
+   }
+   public function __destruct(){
+   }
+   
+   public function pageView($source, $formOptions, $logStatus, $tableData, $url, $studentData, $studentSchools){
+   //This function constructs the page based on the values passed from the controller. If $formOptions isn't empty, the form is going to be inserted, so this first call completes the form data with the $formOptions string containing the schools. The login/admin button is inserted based on the value of $logStatus. $html is then created containing all of the page data, with certain parts being filled in by the variables below based on the $source value. $html is then returned to the controller to be printed.
+      if($source === 'formContent'){
+         $this->createForm($formOptions, $studentData, $studentSchools); 
+      }
+      if($tableData){
+         $this->addTableData($tableData);
+      }
+      if($source === 'studentContent'){
+         $this->createStudentData($studentData, $studentSchools);
+      }
+      
+      if($source === 'loginContent'){
+         $this->createLoginContent();
+      }
+      
       $navBarData = $this->addNavData($logStatus);
       $html = <<<EOT
 <!doctype html>
@@ -29,9 +48,9 @@ class finalView{
       <img src="Images/logo.png" alt="MedOpp Logo" id="logo">
    </div>
    <div class="navBar">
-      <a href="{$address}?nav=home">Home</a>
-      <a href="{$address}?nav=school">School Info</a>
-      <a href="{$address}?nav=apply">Application</a>
+      <a href="{$url}?nav=home">Home</a>
+      <a href="{$url}?nav=school">School Info</a>
+      <a href="{$url}?nav=apply">Application</a>
       {$navBarData}
    </div>
    <div id="contentDiv">{$this->{$source}}</div>
@@ -39,76 +58,382 @@ class finalView{
       <div id="footerDiv">
          <h3>MedOpp Advising Office</h3>
          <p>Phone: 573.882.3893</p>
-         <p>Site: <a href="http://premed.missouri.edu">premed.missouri.edu</a></p>
+         <p>Site: <a href="http://premed.missouri.edu" target="_blank">premed.missouri.edu</a></p>
         
     </div>
 </body>
 </html>
 EOT;
+    
         return $html;
     }
    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
    
-   private function addFormOptions($formOptions){
-      $this->formContent .= 
-         '<div class="form-group">
-            <label>School 1</label>
-            <select class="form-control">
-               <option value="NA" selected>N/A</option>';
-               $this->formContent .= $formOptions;
-      $this->formContent .= '</select></div>';
-      $this->formContent .= 
-         '<div class="form-group">
-            <label>School 2</label>
-            <select class="form-control">
-               <option value="NA" selected>N/A</option>';
-               $this->formContent .= $formOptions;
-      $this->formContent .= '</select></div>';
-      $this->formContent .= 
-         '<div class="form-group">
-            <label>School 3</label>
-            <select class="form-control">
-               <option value="NA" selected>N/A</option>';
-               $this->formContent .= $formOptions;
-      $this->formContent .= '</select></div>';
-      $this->formContent .= 
-         '<div class="form-group">
-            <label>School 4</label>
-            <select class="form-control">
-               <option value="NA" selected>N/A</option>';
-               $this->formContent .= $formOptions;
-      $this->formContent .= '</select></div>';
-      $this->formContent .= 
-         '<div class="form-group">
-            <label>School 5</label>
-            <select class="form-control">
-               <option value="NA" selected>N/A</option>';
-               $this->formContent .= $formOptions;
-      $this->formContent .= '</select></div>';
-      $this->formContent .= '<input type="submit" class="btn btn-primary" value="Submit"></form>';   
+   
+   private function createForm($formOptions, $studentData, $studentSchools){
+   //This function adds the form options, finishing the $formContent source so it can be inserted completed.   
+      
+      $editStatus = '';
+      $formStatus = 'new';
+      
+      $alloStatus = '';
+      $osteoStatus = '';
+      $dentStatus = '';
+      $podStatus = '';
+      $bryantYes = '';
+      $bryantNo = '';
+      $edYes = '';
+      $edNo = '';
+      $mdYes = '';
+      $mdNo = '';
+      $muYes = '';
+      $muNo = '';
+      $firstYes = '';
+      $firstNo = '';
+      
+      if($studentData){
+         $editStatus = "readonly";
+         $formStatus = "update";
+         if($studentData['Candidate'] === 'Allopathic Medicne') $alloStatus = "selected";
+         if($studentData['Candidate'] === 'Osteopathic Medicine') $osteoStatus = "selected";
+         if($studentData['Candidate'] === 'Dentistry') $dentStatus = "selected";
+         if($studentData['Candidate'] === 'Podiatry') $podStatus = "selected";
+      
+         if($studentData['Bryant_Status'] === 'Yes') $bryantYes = 'checked';
+         else $bryantNo = 'checked';
+         if($studentData['ED_Status'] === 'Yes') $edYes = 'checked';
+         else $edNo = 'checked';
+         if($studentData['MDPHD_Status'] === 'Yes') $mdYes = 'checked';
+         else $mdNo = 'checked';
+         if($studentData['MU_Status'] === 'Yes') $muYes = 'checked';
+         else $muNo = 'checked';
+         if($studentData['MU_Status'] === 'Yes') $muYes = 'checked';
+         else $muNo = 'checked';
+         if($studentData['First_Status'] === 'Yes') $firstYes = 'checked';
+         else $firstNo = 'checked';
+         if($studentSchools[0]) 
+            $selectedOption1 = '<option value="' .$studentSchools[0]["School_Name"]. '" selected>' .$studentSchools[0]["School_Name"]. '</option>';
+         if($studentSchools[1]) 
+            $selectedOption2 = '<option value="' .$studentSchools[1]["School_Name"]. '" selected>' .$studentSchools[1]["School_Name"]. '</option>';
+         if($studentSchools[2]) 
+            $selectedOption3 = '<option value="' .$studentSchools[2]["School_Name"]. '" selected>' .$studentSchools[2]["School_Name"]. '</option>';
+         if($studentSchools[3]) 
+            $selectedOption4 = '<option value="' .$studentSchools[3]["School_Name"]. '" selected>' .$studentSchools[3]["School_Name"]. '</option>';
+         if($studentSchools[4]) 
+            $selectedOption5 = '<option value="' .$studentSchools[4]["School_Name"]. '" selected>' .$studentSchools[4]["School_Name"]. '</option>';
+      }
+    
+      $this->formContent .= '
+   <h2 class="center">DEADLINE: MAY 18, 2018 BY 5 PM</h2>
+   <h1 class="center">Committee Interview Applicant Information Form</h1>
+   <hr>
+   <form action="index.php" method="post">
+   <input type="hidden" name="action" value="submitForm"><input type="hidden" name="status" value="' .$formStatus. '">
+   <div class="form-row">
+      <div class="form-group col">
+         <label for="fname">First Name:</label>
+         <input type="text" class="form-control" id="fname" name="First_Name" value="' .$studentData['First_Name']. '" required>
+      </div>
+      <div class="form-group col">
+         <label for="lname">Last Name:</label>
+         <input type="text" class="form-control" id="lname" name="Last_Name" value="' .$studentData['Last_Name']. '" required>
+      </div>
+   </div>
+   <div class="form-row">
+      <div class="form-group col-md-4">
+         <label for="stuID">MU Student ID#:</label>
+         <input type="text" class="form-control" id="stuID" name="StudentID" value="' .$studentData['StudentID']. '" ' .$editStatus. ' required>
+         <small id="stuIDHelp" class="form-text text-muted">Your 8 digit MU Student ID</small>
+      </div>
+      <div class="form-group col-md-8">
+         <label for="address">Local Address:</label>
+         <input type="text" class="form-control" id="address" name="Local_Address" value="' .$studentData['Local_Address']. '" required>
+      </div>
+   </div>
+   <div class="form-row">
+      <div class="form-group col-md-4">
+         <label for="phone">Phone:</label>
+         <input type="text" class="form-control" id="phone" name="Phone" value="' .$studentData['Phone']. '" required>
+      </div>
+      <div class="form-group col-md-8">
+         <label for="email">Email:</label>
+         <input type="email" class="form-control" id="email" name="Email" value="' .$studentData['Email']. '" required>
+         <small id="phoneInfo" class="form-text text-muted">Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.</small>
+      </div>
+   </div>
+   <div class="form-row">
+      <div class="form-group col">
+         <label for="state">Legal resident of what state:</label>
+         <input type="text" class="form-control" id="state" name="State" value="' .$studentData['State']. '" required>
+      </div>
+      <div class="form-group col">
+         <label for="candidate">Candidate For:</label>
+         <select id="candidate" class="form-control" name="Candidate">
+            <option value="Allopathic Medicine"' .$alloStatus. '>Allopathic Medicine</option>
+            <option value="Osteopathic Medicine"' .$osteoStatus. '>Osteopathic Medicine</option>
+            <option value="Dentistry"' .$dentStatus. '>Dentistry</option>
+            <option value="Podiatry"' .$podStatus. '>Podiatry</option>
+         </select>
+      </div>
+   </div>
+   <div class="form-group row">
+      <label class="col-md-3 form-control-label label-inline">Bryant Scholar:</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="Bryant_Status" value="Yes" ' .$bryantYes. ' required> Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="Bryant_Status" value="No" ' .$bryantNo. ' required> No 
+         </label>
+      </div>
+      <label class="col-md-3 form-control-label label-inline">Early Decision:</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="ED_Status" value="Yes" ' .$edYes. ' required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="ED_Status" value="No" ' .$edNo. ' required> No 
+         </label>
+      </div>
+   </div>
+   <div class="form-group row">
+      <label class="col-md-3 form-control-label label-inline">MD/PHD Applicant:</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="MDPHD_Status" value="Yes"' .$mdYes. ' required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="MDPHD_Status" value="No"' .$mdNo. ' required> No 
+         </label>
+      </div>
+      <label class="col-md-3 form-control-label label-inline">Enrolled at MU for FS2017?</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="MU_Status" value="Yes"' .$muYes. ' required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="MU_Status" value="No"' .$muNo. ' required> No 
+         </label>
+      </div>
+   </div>
+   <div class="form-group row">
+      <label class="col-md-9 form-control-label label-inline">Is this the first time you are applying to health professions schools?</label>
+      <div class="col-md-3 div-inline">
+         <label class="radio-inline">
+            <input type="radio" class="" name="First_Status" value="Yes"' .$firstYes. ' required > Yes 
+         </label>
+         <label class="radio-inline">
+            <input type="radio" class="" name="First_Status" value="No"' .$firstNo. ' required> No 
+         </label>
+      </div>
+   </div>
+   <h3 class="center">List of Schools</h3>
+    <p>Please remember:</p>
+    <ul>
+        <li>All letters must be received before the packet will be transmitted.</li>
+        <li class="bold">Once a packet of letters is sent, any additional submissions will cost $10.</li>
+        <li>Letters will not be sent until payment is recieved and you have submitted your AMCAS/AACOMAS/TMDSAS/AADSAS application.</li>
+    </ul>
+   <div class="form-group">
+      <label>School 1</label>
+      <select class="form-control" name="First_School">' .$selectedOption1. 
+      ' ' .$formOptions. '
+      </select>
+   </div>
+   <div class="form-group">
+      <label>School 2</label>
+      <select class="form-control" name="Second_School">' .$selectedOption2. 
+      ' ' .$formOptions. '
+      </select>
+   </div>
+   <div class="form-group">
+      <label>School 3</label>
+      <select class="form-control" name="Third_School">' .$selectedOption3. 
+      ' ' .$formOptions. '
+      </select>
+   </div>
+   <div class="form-group">
+      <label>School 4</label>
+      <select class="form-control" name="Fourth_School">' .$selectedOption4. 
+      ' ' .$formOptions. '
+      </select>
+   </div>
+   <div class="form-group">
+      <label>School 5</label>
+      <select class="form-control" name="Fifth_School">' .$selectedOption5. 
+      ' ' .$formOptions. '
+      </select>
+   </div>
+   <input type="submit" class="btn btn-primary" value="Submit">
+   </form>';
    }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
    private function addNavData($logStatus){
+   //This function determines whether or not the browser display a login button or the admin button based on $logStatus passed from the controller.
       switch($logStatus){
          case "false": 
-            $navBarData = "<a href='{$address}?nav=login' id='loginButton'>Login</a>";
+            $navBarData = "<a href='{$url}?nav=login' id='loginButton'>Login</a>";
             break;
          case "true":
             $navBarData = 
             "<div class='dropdownDiv'>
-               <button onclick='navBarDrop()' class='dropButton'>Admin</button>
+               <button onclick='navBarDrop()' class='dropButton'><img class='keyIcon' src='Images/open-iconic/png/key-2x.png' alt='Logged In Icon'> Admin</button>
                   <div id='myDrop' class='drop-content'>
-                     <a href='{$address}?nav=view'>View Forms</a>
-                     <a href='{$address}?nav=logout'>Logout</a>
+                     <a href='{$url}?nav=view'>View Forms</a>
+                     <a href='{$url}?nav=logout'>Logout</a>
                   </div>
             </div>";
             break;
          default: 
-            $navBarData = "<a href='{$address}?nav=login' id='loginButton'>Login</a>";
+            $navBarData = "<a href='{$url}?nav=login' id='loginButton'>Login</a>";
             break;
       }
       return $navBarData;
+   }
+   
+   private function addTableData($tableData) {
+      $this->viewContent .= $tableData;
+      $this->viewContent .= '</tbody></table>
+      <div class="hiddenSubmitDiv"></div>
+      <div class="hiddenIDDiv"></div>
+      <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this application?</p>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-warning submitDelete" data-dismiss="modal">Delete</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+      </div>
+      </div>';
+   }
+   
+   private function createStudentData($studentData, $studentSchools){
+      $this->studentContent .= '<div><h2>' .$studentData['First_Name']. ' ' .$studentData['Last_Name']. '<span id="formSpan"><a class="backIcon" href="#"><img class="iconBorder" src="Images/open-iconic/png/arrow-circle-left-4x.png" alt="Return Icon"></a><a class="editIconInner" href="#"><img class="iconBorder" src="Images/open-iconic/png/cog-4x.png" alt="Edit Icon"></a></span></h2></div><hr>';
+      
+      $this->studentContent .= 
+      '<table class="table table-striped tableBorder">
+         <tbody>
+            <tr>
+               <td>Student ID:</td>
+               <td id="innerStudentID">' .$studentData['StudentID']. '</td>
+            </tr>
+            <tr>
+               <td>Local Address:</td>
+               <td>' .$studentData['Local_Address']. '</td>
+            </tr>
+            <tr>
+               <td>Phone Number:</td>
+               <td>' .$studentData['Phone']. '</td>
+            </tr>
+            <tr>
+               <td>Email:</td>
+               <td>' .$studentData['Email']. '</td>
+            </tr>
+            <tr>
+               <td>Legal Resident Of:</td>
+               <td>' .$studentData['State']. '</td>
+            </tr>
+            <tr>
+               <td>Candidate For:</td>
+               <td>' .$studentData['Candidate']. '</td>
+            </tr>
+            <tr>
+               <td>Bryant Scholar:</td>
+               <td>' .$studentData['Bryant_Status']. '</td>
+            </tr>
+            <tr>
+               <td>Early Decision:</td>
+               <td>' .$studentData['ED_Status']. '</td>
+            </tr>
+            <tr>
+               <td>MD/PHD Applicant:</td>
+               <td>' .$studentData['MDPHD_Status']. '</td>
+            </tr>
+            <tr>
+               <td>Enrolled at MU for FS2017?</td>
+               <td>' .$studentData['MU_Status']. '</td>
+            </tr>
+            <tr>
+               <td>First Time applying to Health Professions Schools:</td>
+               <td>' .$studentData['First_Status']. '</td>
+            </tr>
+         </tbody>
+      </table>
+      <br>
+      <h3>Schools</h3>
+      <br>
+      <table class="table table-striped tableBorder">
+         <thead>
+            <tr>
+               <th>School Name</th>
+               <th>City</th>
+               <th>State</th>
+               <th>School Type</th>
+            <tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>' .$studentSchools[0]["School_Name"]. '</td>
+               <td>' .$studentSchools[0]["City"]. '</td>
+               <td>' .$studentSchools[0]["State"]. '</td>
+               <td>' .$studentSchools[0]["School_Type"]. '</td>
+            </tr>
+            <tr>
+               <td>' .$studentSchools[1]["School_Name"]. '</td>
+               <td>' .$studentSchools[1]["City"]. '</td>
+               <td>' .$studentSchools[1]["State"]. '</td>
+               <td>' .$studentSchools[1]["School_Type"]. '</td>
+            </tr>
+            <tr>
+               <td>' .$studentSchools[2]["School_Name"]. '</td>
+               <td>' .$studentSchools[2]["City"]. '</td>
+               <td>' .$studentSchools[2]["State"]. '</td>
+               <td>' .$studentSchools[2]["School_Type"]. '</td>
+            </tr>
+            <tr>
+               <td>' .$studentSchools[3]["School_Name"]. '</td>
+               <td>' .$studentSchools[3]["City"]. '</td>
+               <td>' .$studentSchools[3]["State"]. '</td>
+               <td>' .$studentSchools[3]["School_Type"]. '</td>
+            </tr>
+            <tr>
+               <td>' .$studentSchools[4]["School_Name"]. '</td>
+               <td>' .$studentSchools[4]["City"]. '</td>
+               <td>' .$studentSchools[4]["State"]. '</td>
+               <td>' .$studentSchools[4]["School_Type"]. '</td>
+            </tr>
+         </tbody>
+      </table>
+      
+   <div class="hiddenSubmitDiv"></div>';
+   }
+   
+   private function createLoginContent(){
+      if($_SESSION['logError'] === "Yes") $this->loginContent .= '<h4 class="red">Login Failed, Try Again!</h4>';
+      $this->loginContent .= '
+      <form action="index.php" method="post">
+      <input type="hidden" name="action" value="login">
+      <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" name="username" id="username" required>
+      </div>
+      <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" name="pwd" id="pwd" required>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+      </form>';
    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
@@ -129,134 +454,11 @@ EOT;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
-   var $formContent = 
-'<h2 class="center">DEADLINE: MAY 18, 2018 BY 5 PM</h2>
-<h1 class="center">Committee Interview Applicant Information Form</h1>
-<hr>
-<form>
-   <input type="hidden" name="action" value="add"/>
-   <div class="form-row">
-      <div class="form-group col">
-         <label for="fname">First Name:</label>
-         <input type="text" class="form-control" id="fname" name="firstName">
-      </div>
-      <div class="form-group col">
-         <label for="lname">Last Name:</label>
-         <input type="text" class="form-control" id="lname" name="lastName">
-      </div>
-   </div>
-   <div class="form-row">
-      <div class="form-group col-md-4">
-         <label for="stuID">MU Student ID#:</label>
-         <input type="text" class="form-control" id="stuID" name="studentID">
-         <small id="stuIDHelp" class="form-text text-muted">Your 8 digit MU Student ID</small>
-      </div>
-      <div class="form-group col-md-8">
-         <label for="address">Local Address:</label>
-         <input type="text" class="form-control" id="address" name="address">
-      </div>
-   </div>
-   <div class="form-row">
-      <div class="form-group col-md-4">
-         <label for="phone">Phone:</label>
-         <input type="text" class="form-control" id="phone" name="phone">
-      </div>
-      <div class="form-group col-md-8">
-         <label for="email">Email:</label>
-         <input type="email" class="form-control" id="email" name="email">
-         <small id="phoneInfo" class="form-text text-muted">Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.</small>
-      </div>
-   </div>
-   <div class="form-row">
-      <div class="form-group col">
-         <label for="state">Legal resident of what state</label>
-         <input type="text" class="form-control" id="state" name="state">
-      </div>
-      <div class="form-group col">
-         <label for="candidate">Candidate For:</label>
-         <select id="candidate" class="form-control" name="candidate">
-            <option value="Allo">Allopathic Medicine</option>
-            <option value="Osteo">Osteopathic Medicine</option>
-            <option value="Dent">Dentistry</option>
-         </select>
-      </div>
-   </div>
-   <div class="form-group row">
-      <label class="col-md-3 form-control-label label-inline">Bryant Scholar:</label>
-      <div class="col-md-3 div-inline">
-         <label class="radio-inline">
-            <input type="radio" class="" name="bryant" value="yes" required > Yes 
-         </label>
-         <label class="radio-inline">
-            <input type="radio" class="" name="bryant" value="no" required> No 
-         </label>
-      </div>
-      <label class="col-md-3 form-control-label label-inline">Early Decision:</label>
-      <div class="col-md-3 div-inline">
-         <label class="radio-inline">
-            <input type="radio" class="" name="earlydecision" value="yes" required > Yes 
-         </label>
-         <label class="radio-inline">
-            <input type="radio" class="" name="earlydecision" value="no" required> No 
-         </label>
-      </div>
-   </div>
-   <div class="form-group row">
-      <label class="col-md-3 form-control-label label-inline">MD/PHD Applicant:</label>
-      <div class="col-md-3 div-inline">
-         <label class="radio-inline">
-            <input type="radio" class="" name="mdphd" value="yes" required > Yes 
-         </label>
-         <label class="radio-inline">
-            <input type="radio" class="" name="mdphd" value="no" required> No 
-         </label>
-      </div>
-      <label class="col-md-3 form-control-label label-inline">Enrolled at MU for FS2017?</label>
-      <div class="col-md-3 div-inline">
-         <label class="radio-inline">
-            <input type="radio" class="" name="enrolled" value="yes" required > Yes 
-         </label>
-         <label class="radio-inline">
-            <input type="radio" class="" name="enrolled" value="no" required> No 
-         </label>
-      </div>
-   </div>
-   <div class="form-group row">
-      <label class="col-md-9 form-control-label label-inline">Is this the first time you are applying to health professions schools?</label>
-      <div class="col-md-3 div-inline">
-         <label class="radio-inline">
-            <input type="radio" class="" name="firstapply" value="yes" required > Yes 
-         </label>
-         <label class="radio-inline">
-            <input type="radio" class="" name="firstapply" value="no" required> No 
-         </label>
-      </div>
-   </div>
-   <h3 class="center">List of Schools</h3>
-    <p>Please remember:</p>
-    <ul>
-        <li>All letters must be received before the packet will be transmitted.</li>
-        <li class="bold">Once a packet of letters is sent, any additional submissions will cost $10.</li>
-        <li>Letters will not be sent until payment is recieved and you have submitted your AMCAS/AACOMAS/TMDSAS/AADSAS application.</li>
-    </ul>';
-
+   var $formContent = '';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
-   var $loginContent = 
-'<h2 class="center">Please Sign In</h2>
-<form action="index.php" method="post">
-   <input type="hidden" name="action" value="login">
-   <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" class="form-control" name="username" id="username>
-   </div>
-   <div class="form-group">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" name="pwd" id="pwd">
-   </div>
-   <button type="submit" class="btn btn-default">Submit</button>
-</form>';
+   var $loginContent = '<h2 class="center">Please Sign In</h2>';
    
    var $unloggedContent = 
 '<br><br><h2 class="center">Sorry!</h2>
@@ -311,6 +513,22 @@ EOT;
    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
-   var $viewContent = '<h2>Will be worked on later</h2>';
+   var $viewContent = 
+'<h2 class="center">Applications Master List</h2>
+<hr>
+<table id="applicationTable" class="table table-striped tableBorder">
+   <thead>
+      <tr>
+         <th>Student ID</th>
+         <th>Last Name</th>
+         <th>First Name</th>
+         <th class="text-right">Edit/Delete</th>
+      <tr>
+   </thead>
+   <tbody>';
+   
+   var $studentContent = '';
+   
 }
+ 
 ?>

@@ -127,3 +127,34 @@
 .displayInline {
    display: inline-block;
 }
+
+.tableBorder {
+   box-shadow: 0 0 5px lightgray;
+}
+.iconBorder {
+   padding: 5px;
+   margin: 2px;
+   box-shadow: 0 0 2px lightgray;
+   background-color: white;
+}
+.iconBorder:hover {
+   box-shadow: 0 0 2px black;
+}
+
+.studentSelect:link, .studentSelect:visited {
+   color: #0000EE;
+}
+.keyIcon {
+   margin: 0 20% 0 0;
+}
+
+#formSpan {
+   float: right;
+}
+.red {
+   color: red;
+}
+
+.submitDelete {
+   background-color: red;
+}
