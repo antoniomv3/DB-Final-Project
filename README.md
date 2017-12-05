@@ -35,7 +35,7 @@ finalDatabase
 ![alt text](https://github.com/antoniomv3/DB-Final-Project/blob/master/Final%20Project%20Files/Images/EDR.PNG)
 
 ## CRUD Explanation
-  All of the create, read, update, and delete functions are happening within the admin's application master list and the application itself. 
+  All of the create, read, update, and delete functions are happening within the admin's application master list and the application itself. You can find details on each of these functions and how they work in finalModel.php around line 200.
   1. **Create)** A student is being created in the 'Students' table after they enter their information and click 'Submit'. 
   2. **Read)** When the admin clicks on a student's ID number, they are taken to a separate page to view all of their information. This page is reading all of the information from the 'Students' and 'Applications' tables. 
   3. **Update)** The admin can update the student information by clicking on the gear on the application master list or in the top right corner of a student's individual information page. This updates the 'Student' and 'Applications' table according to the new application submitted by the admin.
