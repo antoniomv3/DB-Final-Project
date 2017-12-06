@@ -1,3 +1,4 @@
+//This function was built using pointers supplied by w3schools!
 function navBarDrop(){
    document.getElementById("myDrop").classList.toggle("show");
    window.onclick = function(event){
@@ -51,7 +52,7 @@ $(document).ready(function(){
       var form = '<form id="deleteForm" action="index.php" method="post"><input type="hidden" name="action" value="deleteStudent"><input type="hidden" name="StudentID" value="' +$id+'"></form>';
       $(".hiddenSubmitDiv").html(form);
       $(".modal-title").html($first + ' ' + $last + ' - ' + $id);
-      $("#myModal").modal('toggle');
+      $("#deleteModal").modal('toggle');
    });
    
    $(".submitDelete").click(function(){
@@ -84,5 +85,15 @@ $(document).ready(function(){
       var form = '<form id="masterStudentForm" action="index.php" method="post"><input type="hidden" name="action" value="editStudent"><input type="hidden" name="StudentID" value="' +$id+'"></form>';
       $(".hiddenSubmitDiv").html(form);
       $("#masterStudentForm").submit();
+   });
+   
+   $(".deleteIconInner").click(function(){
+      event.preventDefault();
+      $id = $("#innerStudentID").html();
+      $name = $("#innerName").html();
+      var form = '<form id="deleteForm" action="index.php" method="post"><input type="hidden" name="action" value="deleteStudent"><input type="hidden" name="StudentID" value="' +$id+'"></form>';
+      $(".hiddenSubmitDiv").html(form);
+      $(".modal-title").html($name + ' - ' + $id);
+      $("#deleteModal").modal('toggle');
    });
 });

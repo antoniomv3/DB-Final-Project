@@ -44,23 +44,40 @@ class finalView{
 <body>
    <div id="headerBar"></div>
    <div id="bodyDiv">
-   <div id="headerDiv">
-      <img src="Images/logo.png" alt="MedOpp Logo" id="logo">
+      <div id="headerDiv">
+         <img src="Images/logo.png" alt="MedOpp Logo" id="logo">
+      </div>
+      <div class="navBar">
+         <a href="{$url}?nav=home">Home</a>
+         <a href="{$url}?nav=school">School Info</a>
+         <a href="{$url}?nav=apply">Application</a>
+         {$navBarData}
+      </div>
+      <div id="contentDiv">{$this->{$source}}</div>
    </div>
-   <div class="navBar">
-      <a href="{$url}?nav=home">Home</a>
-      <a href="{$url}?nav=school">School Info</a>
-      <a href="{$url}?nav=apply">Application</a>
-      {$navBarData}
+   
+   <div id="deleteModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this application?</p>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-danger submitDelete" data-dismiss="modal">Delete</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+      </div>
    </div>
-   <div id="contentDiv">{$this->{$source}}</div>
+   
+   <div id="footerDiv">
+      <h3>MedOpp Advising Office</h3>
+      <p>Phone: 573.882.3893</p>
+      <p>Site: <a href="http://premed.missouri.edu" target="_blank">premed.missouri.edu</a></p>   
    </div>
-      <div id="footerDiv">
-         <h3>MedOpp Advising Office</h3>
-         <p>Phone: 573.882.3893</p>
-         <p>Site: <a href="http://premed.missouri.edu" target="_blank">premed.missouri.edu</a></p>
-        
-    </div>
 </body>
 </html>
 EOT;
@@ -144,7 +161,7 @@ EOT;
    <div class="form-row">
       <div class="form-group col-md-4">
          <label for="stuID">MU Student ID#:</label>
-         <input type="text" class="form-control" id="stuID" name="StudentID" value="' .$studentData['StudentID']. '" ' .$editStatus. ' required>
+         <input type="text" pattern="[0-9]{8}" class="form-control" id="stuID" name="StudentID" value="' .$studentData['StudentID']. '" ' .$editStatus. ' required>
          <small id="stuIDHelp" class="form-text text-muted">Your 8 digit MU Student ID</small>
       </div>
       <div class="form-group col-md-8">
@@ -155,12 +172,13 @@ EOT;
    <div class="form-row">
       <div class="form-group col-md-4">
          <label for="phone">Phone:</label>
-         <input type="text" class="form-control" id="phone" name="Phone" value="' .$studentData['Phone']. '" required>
+         <input type="text" pattern="[0-9]{3}[\-][0-9]{3}[\-][0-9]{4}" class="form-control" id="phone" name="Phone" value="' .$studentData['Phone']. '" required>
+         <small id="phoneInfo" class="form-text text-muted">Please supply in XXX-XXX-XXXX format.</small>
       </div>
       <div class="form-group col-md-8">
          <label for="email">Email:</label>
          <input type="email" class="form-control" id="email" name="Email" value="' .$studentData['Email']. '" required>
-         <small id="phoneInfo" class="form-text text-muted">Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.</small>
+         <small id="emailInfo" class="form-text text-muted">Include where you can be reached during Summer/Fall Semeseter. If this information changes, be sure to notify the MedOpp Office.</small>
       </div>
    </div>
    <div class="form-row">
@@ -298,28 +316,11 @@ EOT;
    private function addTableData($tableData) {
       $this->viewContent .= $tableData;
       $this->viewContent .= '</tbody></table>
-      <div class="hiddenSubmitDiv"></div>
-      <div class="hiddenIDDiv"></div>
-      <div id="myModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-      <div class="modal-content">
-      <div class="modal-header">
-         <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete this application?</p>
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-warning submitDelete" data-dismiss="modal">Delete</button>
-         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-      </div>
-      </div>
-      </div>';
+      <div class="hiddenSubmitDiv"></div>';
    }
    
    private function createStudentData($studentData, $studentSchools){
-      $this->studentContent .= '<div><h2>' .$studentData['First_Name']. ' ' .$studentData['Last_Name']. '<span id="formSpan"><a class="backIcon" href="#"><img class="iconBorder" src="Images/open-iconic/png/arrow-circle-left-4x.png" alt="Return Icon"></a><a class="editIconInner" href="#"><img class="iconBorder" src="Images/open-iconic/png/cog-4x.png" alt="Edit Icon"></a></span></h2></div><hr>';
+      $this->studentContent .= '<div><h2><span id="innerName">' .$studentData['First_Name']. ' ' .$studentData['Last_Name']. '</span><span id="formSpan"><a class="backIcon" href="#"><img class="iconBorder" src="Images/open-iconic/png/arrow-circle-left-4x.png" alt="Return Icon"></a><a class="editIconInner" href="#"><img class="iconBorder" src="Images/open-iconic/png/cog-4x.png" alt="Edit Icon"></a><a class="deleteIconInner" href="#"><img class="iconBorder" src="Images/open-iconic/png/trash-4x.png" alt="Return Icon"></a></span></h2></div><hr>';
       
       $this->studentContent .= 
       '<table class="table table-striped tableBorder">
@@ -440,15 +441,15 @@ EOT;
    var $homeContent = 
       '<h1 class="center">Welcome to the Committee Interview Application for the 2018 Entering Class!</h1>
       <hr>
-        <p>To assist you with your health professions applications, the MedOpp Advising Office writes and transmits committee letters of evaluation for MU students who are currently enrolled or recent graduates and are first-time applicants. (Many medical/dental schools require a committee letter; most schools highly recommend a ltter.) The committee letter is based on data gathered from serveral sources: your letters of recommendation, your interview with the Health Professions Interview Committee, and additional information in your file. Your committee letter of evaluation is transmitted to the schools of your choice along with the individual letters of recommendation that have been submitted on your behalf.</p>
+        <p>To assist you with your health professions applications, the MedOpp Advising Office writes and transmits committee letters of evaluation for MU students who are currently enrolled or recent graduates and are first-time applicants. (Many medical/dental schools require a committee letter; most schools highly recommend a letter.) The committee letter is based on data gathered from serveral sources: your letters of recommendation, your interview with the Health Professions Interview Committee, and additional information in your file. Your committee letter of evaluation is transmitted to the schools of your choice along with the individual letters of recommendation that have been submitted on your behalf.</p>
         
-        <p><span class="bold">To be eligible for a Health Professions Committee interview and evaluation, all materials (except letters of recommendation) must be received by the MedOpp Advising Office by May 19th at 5 pm. Also, you must attend the required spring workshops (see application timeline) or view the PowerPoint presentations on Canvas and follow up with an individual meeting for each workshop missed.</span> We will conduct interviews from mid-May through August. Medical school early decision candidates and pre-dental candidates will be interviewed in May/June. In the event that the number of studnets seeking admission to health professions school exceeds our capacity to conduct appopriate interviews and process applications in a timely manner, we reserve the right to limit the number of interviews we conduct in a given year.</p>
+        <p><span class="bold">To be eligible for a Health Professions Committee interview and evaluation, all materials (except letters of recommendation) must be received by the MedOpp Advising Office by May 18th at 5 pm. Also, you must attend the required spring workshops (see application timeline) or view the PowerPoint presentations on Canvas and follow up with an individual meeting for each workshop missed.</span> We will conduct interviews from mid-May through August. Medical school early decision candidates and pre-dental candidates will be interviewed in May/June. In the event that the number of students seeking admission to health professions school exceeds our capacity to conduct appropriate interviews and process applications in a timely manner, we reserve the right to limit the number of interviews we conduct in a given year.</p>
         
-        <p>Applicants will be charged a non-refundable fee of $35 for administrative costs and transmission of letters regardless of how many schools are designtaed during the 2018 application cycle. Letters will be transmitted electronically to medical schools via Virtual Evals and to dental schools via AADSAS.</p>
+        <p>Applicants will be charged a non-refundable fee of $35 for administrative costs and transmission of letters regardless of how many schools are designated during the 2018 application cycle. Letters will be transmitted electronically to medical schools via Virtual Evals and to dental schools via AADSAS.</p>
         
         <p>Remember: It is to your advantage to have all letters of recommendation in our office by June.<span class="bold"> Revisions of your personal statement and CV must be submitted before you schedule your committee interview. Once your interview has been scheduled, updates to your file will not be accepted.</span></p>
         
-        <p>These materials are part of your permananent file with the MedOpp Advising Office; however, only your official committee evaluation letter and supporting letters will be sent by this office. Official transcripts and other application materials must be sent by you. AMCAS, AACOMAS, TDMSAS, and AADSAS applications are available online, usually by May; other application materials can be obtianed directly from appropriate schools.</p>
+        <p>These materials are part of your permanent file with the MedOpp Advising Office; however, only your official committee evaluation letter and supporting letters will be sent by this office. Official transcripts and other application materials must be sent by you. AMCAS, AACOMAS, TDMSAS, and AADSAS applications are available online, usually by May; other application materials can be obtained directly from appropriate schools.</p>
         
         <p>If you have any further questions regarding this process, please call one of the MedOpp Advisiors at 882-3893.</p>';
 

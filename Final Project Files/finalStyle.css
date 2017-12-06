@@ -25,7 +25,7 @@
       height: 10px;
    }
 
-   /*CSS for Navbar*/
+   /*CSS for Navbar, padding and attributes created with pointers from w3Schools!*/
    .navBar {
       overflow: hidden;
       background-color: #333;
@@ -153,8 +153,4 @@
 }
 .red {
    color: red;
-}
-
-.submitDelete {
-   background-color: red;
 }

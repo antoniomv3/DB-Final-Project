@@ -9,7 +9,7 @@ class finalModel {
    public function __destruct(){
    }
    
-   public function preparePageContent($nav, $studentID){
+   public function preparePageContent($nav){
    //The functionality of this function is determined by the $nav value passed from the controller. It first creates the variables it will return, getting $logStatus from session to maintain dynamic status no matter where the user redirects on the page, then manipulates those variables based on the value of 'nav'.  
       $formOptions = '';
       $logStatus = $_SESSION['logStatus'];
@@ -27,13 +27,18 @@ class finalModel {
             case "apply":
             //The function called here obtains additional form data from the database and passes it back as well.
                $source = 'formContent';
-               $formOptions = $this->prepareFormData($this->initDatabaseConnection());
+               if($logStatus === 'true'){
+                  $formOptions = $this->prepareFormData($this->initDatabaseConnectionLogged());
+               }
+               else {
+                  $formOptions = $this->prepareFormData($this->initDatabaseConnectionUnlogged());
+               }
                break;
             case "view":
             //This page requires a user be logged in, so if an unlogged user attempts to access it, it will instead return a variable pointing them to a page saying they must be logged in.
                if($logStatus === 'true'){
                   $source = 'viewContent';
-                  $tableData = $this->prepareTableData($this->initDatabaseConnection());
+                  $tableData = $this->prepareTableData($this->initDatabaseConnectionLogged());
                }
                else $source = 'unloggedContent';
                break;
@@ -49,31 +54,31 @@ class finalModel {
             case "selectStudent":
                if($logStatus === 'true'){
                   $source = 'studentContent';
-                  $studentData = $this->prepareStudentData($this->initDatabaseConnection());
-                  $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnection(), $studentID);
+                  $studentData = $this->prepareStudentData($this->initDatabaseConnectionLogged());
+                  $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnectionLogged());
                }
                break;
             case "deleteStudent":
                if($logStatus === 'true'){
                   $source = 'viewContent';
-                  $this->deleteStudentData($this->initDatabaseConnection(), $studentID);
-                  $tableData = $this->prepareTableData($this->initDatabaseConnection());
+                  $this->deleteStudentData($this->initDatabaseConnectionLogged(), $studentID);
+                  $tableData = $this->prepareTableData($this->initDatabaseConnectionLogged());
                }
                break;
             case "editStudent":
                if($logStatus === 'true'){
                   $source = 'formContent';
-                  $formOptions = $this->prepareFormData($this->initDatabaseConnection());
-                  $studentData = $this->prepareStudentData($this->initDatabaseConnection());
-                  $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnection(), $studentID);
+                  $formOptions = $this->prepareFormData($this->initDatabaseConnectionLogged());
+                  $studentData = $this->prepareStudentData($this->initDatabaseConnectionLogged());
+                  $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnectionLogged());
                }
                break;
             case "updateStudent":
                if($logStatus === 'true'){
                   $source = 'studentContent';
-                  $this->updateStudentData($this->initDatabaseConnection());
-                  $studentData = $this->prepareStudentData($this->initDatabaseConnection());
-                  $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnection(), $studentID);
+                  $this->updateStudentData($this->initDatabaseConnectionLogged());
+                  $studentData = $this->prepareStudentData($this->initDatabaseConnectionLogged());
+                  $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnectionLogged());
                }
                break;
             default:
@@ -87,7 +92,7 @@ class finalModel {
    
    public function processLogin($username, $password) {
    //This function logs the user in, first it connects to the database, then it scrubs the username and password variables passed from the controller. It sees if there is a user in the database matching the username variable inputted. If so, it then compares the passwords and on a match sets the session log status to true. If not it sets it to false. It then frees the results and closes the connection, and returns the logStatus obtained from the session. 
-         $mysqli = $this->initDatabaseConnection();
+         $mysqli = $this->initDatabaseConnectionUnlogged();
          $query = $mysqli->prepare("SELECT * FROM Users WHERE username = ?");
          $query->bind_param("s", $username);
          $query->execute();
@@ -116,8 +121,15 @@ class finalModel {
    private function processLogout(){
       $_SESSION['logStatus'] = 'false';
    }
-   private function initDatabaseConnection() {
-      include "../inc/dbinfo.inc";
+   
+   private function initDatabaseConnectionUnlogged() {
+      include "../inc/dbinfoUnlogged.inc";
+      $mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+      return $mysqli;
+   }
+   
+   private function initDatabaseConnectionLogged() {
+      include "../inc/dbinfoLogged.inc";
       $mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
       return $mysqli;
    }
@@ -180,8 +192,7 @@ class finalModel {
    
    private function prepareStudentSchools($mysqli) {
       $studentID = $_POST['StudentID'];
-      $studentID = $mysqli->real_escape_string($studentID);
-  
+    
       $query = $mysqli->prepare("SELECT b.School_Name, b.City, b.State, b.School_Type FROM Students INNER JOIN Applications ON Students.StudentID = Applications.StudentID INNER JOIN Schools AS b ON b.School_Name = Applications.School_Name WHERE Applications.StudentID = ?");
       $query->bind_param("s", $studentID);
       $query->execute();
