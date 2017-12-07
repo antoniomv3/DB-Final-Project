@@ -36,7 +36,7 @@ finalDatabase
 
 ## CRUD Explanation
   All of the create, read, update, and delete functions are happening within the admin's application master list and the application itself. You can find details on each of these functions and how they work in finalModel.php around line 200.
-  1. **Create)** A student is being created in the 'Students' table after they enter their information and click 'Submit'. 
+  1. **Create)** A student is being created in the 'Students' table after they enter their information and click 'Submit', also, information is added to the 'Applications' table if a school is chosen. 
   2. **Read)** When the admin clicks on a student's ID number, they are taken to a separate page to view all of their information. This page is reading all of the information from the 'Students' and 'Applications' tables. 
   3. **Update)** The admin can update the student information by clicking on the gear on the application master list or in the top right corner of a student's individual information page. This updates the 'Student' and 'Applications' table according to the new application submitted by the admin.
   4. **Delete)** The admin is also allowed to completely delete a student's information from the application master list by clicking on the trash can icon next to a student. This deletes the student from the 'Student' and 'Applications' table.
