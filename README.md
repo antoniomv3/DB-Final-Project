@@ -32,7 +32,7 @@ finalDatabase
      * password
       
 ## Entity Relationship Diagram
-![alt text](https://github.com/antoniomv3/DB-Final-Project/blob/master/Final%20Project%20Files/Images/EDR.PNG)
+![ERD](https://github.com/antoniomv3/DB-Final-Project/blob/master/Final%20Project%20Files/Images/EDR.PNG)
 
 ## CRUD Explanation
   All of the create, read, update, and delete functions are happening within the admin's application master list and the application itself. You can find details on each of these functions and how they work in finalModel.php around line 200.
