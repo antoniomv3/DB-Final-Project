@@ -90,13 +90,22 @@ class finalModel {
  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
-   public function processLogin($username, $password) {
+   public function processLogin() {
    //This function logs the user in, first it connects to the database, then it scrubs the username and password variables passed from the controller. It sees if there is a user in the database matching the username variable inputted. If so, it then compares the passwords and on a match sets the session log status to true. If not it sets it to false. It then frees the results and closes the connection, and returns the logStatus obtained from the session. 
+         $username = $_POST['username'];
+         $password = $_POST['pwd'];
+      
          $mysqli = $this->initDatabaseConnectionUnlogged();
-         $query = $mysqli->prepare("SELECT * FROM Users WHERE username = ?");
-         $query->bind_param("s", $username);
+         
+       if ( !$query = $mysqli->prepare("SELECT * FROM Users WHERE username = ?")){
+         Echo"there was an error by user";
+        Exit;     
+         };
+         
+       $query->bind_param("s", $username);
          $query->execute();
          $result = $query->get_result();
+       
          if($result->num_rows === 1){
             $row = $result->fetch_array(MYSQLI_ASSOC);
             if(password_verify($password, $row['password'])){
@@ -125,19 +134,38 @@ class finalModel {
    private function initDatabaseConnectionUnlogged() {
       include "../inc/dbinfoUnlogged.inc";
       $mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+    
+       if ($mysqli->connect_errno){
+      Echo"unable to connect to database";
+       Exit;
+       }
       return $mysqli;
+     
+   
    }
    
    private function initDatabaseConnectionLogged() {
       include "../inc/dbinfoLogged.inc";
       $mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+    
+if ($mysqli->connect_errno){
+      Echo"unable to connect to Database";
+       Exit;
+}
       return $mysqli;
+     
+      
    }
    
    private function prepareFormData($mysqli) {
    //This function connects to the database and creates a string containing options for all of the schools obtained.
       $query="SELECT School_Name FROM Schools";
-      $result = $mysqli->query($query);
+      if (!$result = $mysqli->query($query))
+      {
+      Echo"error";
+      $mysqli->close();
+      Exit;
+      }
       $options = '<option value="N/A">N/A</option>';
       
       while($row = $result->fetch_array()){
@@ -154,8 +182,15 @@ class finalModel {
    
    private function prepareTableData($mysqli) {
       $query="SELECT StudentID, Last_Name, First_Name FROM Students ORDER BY Last_Name ASC;";
-      $result = $mysqli->query($query);
-      if($result->num_rows === 0){
+      if(!$result = $mysqli->query($query)){
+           Echo"unable to prepare table data";
+            $mysqli->close();
+            Exit;
+      }
+      
+       
+       
+       if($result->num_rows === 0){
          $tableData = '<tr><td colspan="4">There are no applications in the database at this time!</td></tr>';
          return $tableData;
       }
@@ -177,8 +212,15 @@ class finalModel {
    private function prepareStudentData($mysqli) {
       $studentID = $_POST['StudentID'];
       
-      $query = $mysqli->prepare("SELECT * FROM Students WHERE StudentID = ?");
-      $query->bind_param("s", $studentID);
+      if (!$query = $mysqli->prepare("SELECT * FROM Students WHERE StudentID = ?")){
+      
+       Echo"unable to prepare students data";
+            Exit;  
+      }
+       
+       
+       
+       $query->bind_param("s", $studentID);
       $query->execute();
       $result = $query->get_result();
       
@@ -193,7 +235,10 @@ class finalModel {
    private function prepareStudentSchools($mysqli) {
       $studentID = $_POST['StudentID'];
     
-      $query = $mysqli->prepare("SELECT b.School_Name, b.City, b.State, b.School_Type FROM Students INNER JOIN Applications ON Students.StudentID = Applications.StudentID INNER JOIN Schools AS b ON b.School_Name = Applications.School_Name WHERE Applications.StudentID = ?");
+      if (!$query = $mysqli->prepare("SELECT b.School_Name, b.City, b.State, b.School_Type FROM Students INNER JOIN Applications ON Students.StudentID = Applications.StudentID INNER JOIN Schools AS b ON b.School_Name = Applications.School_Name WHERE Applications.StudentID = ?")){
+          Echo"unable to prepare students schools";
+            Exit;  
+      }
       $query->bind_param("s", $studentID);
       $query->execute();
       $result = $query->get_result();
@@ -211,7 +256,12 @@ class finalModel {
    private function deleteStudentData($mysqli){
       $studentID = $_POST['StudentID'];
       
-      $query = $mysqli->prepare("DELETE FROM Applications WHERE StudentID = ?");
+      if(!$query = $mysqli->prepare("DELETE FROM Applications WHERE StudentID = ?"))
+      {
+          Echo"unable to delete student data";
+            Exit;  
+      
+      }
       $query->bind_param("s", $studentID);
       $query->execute();
       
@@ -244,15 +294,25 @@ class finalModel {
       $Fourth_School = $_POST['Fourth_School'];
       $Fifth_School = $_POST['Fifth_School'];
    
-      $query = $mysqli->prepare("UPDATE Students SET First_NAME = ?, Last_Name = ?, Local_Address = ?, Phone = ?, Email = ?, State = ?, Candidate = ?, Bryant_Status = ?, ED_Status = ?, MDPHD_Status = ?, MU_Status = ?, First_Status = ? WHERE StudentID = ?");
+      if(!$query = $mysqli->prepare("UPDATE Students SET First_NAME = ?, Last_Name = ?, Local_Address = ?, Phone = ?, Email = ?, State = ?, Candidate = ?, Bryant_Status = ?, ED_Status = ?, MDPHD_Status = ?, MU_Status = ?, First_Status = ? WHERE StudentID = ?")){
+          Echo"unable to update the application";
+            Exit;  
+      }
       $query->bind_param("sssssssssssss", $First_Name, $Last_Name, $Local_Address, $Phone, $Email, $State, $Candidate, $Bryant_Status, $ED_Status, $MDPHD_Status, $MU_Status, $First_Status, $StudentID);
       $query->execute();
       
-      $query = $mysqli->prepare("DELETE FROM Applications WHERE StudentID = ?");
+      if(!$query = $mysqli->prepare("DELETE FROM Applications WHERE StudentID = ?")){
+          Echo"unable to delete from application";
+            Exit;  
+      }
       $query->bind_param("s", $StudentID);
       $query->execute();
       
-      $query = $mysqli->prepare("INSERT INTO Applications (StudentID, School_Name) VALUES (?, ?);");
+      if(!$query = $mysqli->prepare("INSERT INTO Applications (StudentID, School_Name) VALUES (?, ?);"))
+      {
+     Echo"unable to insert in application";
+      Exit;  
+      }
       if($First_School != 'N/A'){
       $query->bind_param("ss", $StudentID, $First_School);
       $query->execute();
