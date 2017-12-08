@@ -81,6 +81,15 @@ class finalModel {
                   $studentSchools = $this->prepareStudentSchools($this->initDatabaseConnectionLogged());
                }
                break;
+                 
+                 
+             case "newStudent":
+               $this->insertStudentData($this->initDatabaseConnectionUnlogged());
+                 
+               $source = 'homeContent';
+            
+               break;
+                 
             default:
             //If anything not listed above is present in the nav variable, it will return it to the home page anyway.
                $source = 'homeContent';
@@ -337,5 +346,68 @@ if ($mysqli->connect_errno){
       $query->close();
       $mysqli->close();
    }
+    
+    private function insertStudentData($mysqli){
+
+         
+     $First_Name = $_POST['First_Name'];
+      $Last_Name = $_POST['Last_Name'];
+      $StudentID = $_POST['StudentID'];
+      $Local_Address = $_POST['Local_Address'];
+      $Phone = $_POST['Phone'];
+      $Email = $_POST['Email'];
+      $State = $_POST['State'];
+      $Candidate = $_POST['Candidate'];
+      $Bryant_Status = $_POST['Bryant_Status'];
+      $ED_Status = $_POST['ED_Status'];
+      $MDPHD_Status = $_POST['MDPHD_Status'];
+      $MU_Status = $_POST['MU_Status'];
+      $First_Status = $_POST['First_Status'];
+      
+      $First_School = $_POST['First_School'];
+      $Second_School = $_POST['Second_School'];
+      $Third_School = $_POST['Third_School'];
+      $Fourth_School = $_POST['Fourth_School'];
+      $Fifth_School = $_POST['Fifth_School'];
+      
+       
+      if(!$query = $mysqli->prepare("INSERT INTO Students (First_Name, Last_Name, StudentID, Local_Address, Phone, Email, State, Candidate, Bryant_Status, ED_Status, MDPHD_Status, MU_Status, First_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")){
+          echo "unable to submit application";
+         exit;
+      }
+       $query->bind_param("sssssssssssss", $First_Name, $Last_Name, $StudentID, $Local_Address, $Phone, $Email, $State, $Candidate, $Bryant_Status, $ED_Status, $MDPHD_Status, $MU_Status, $First_Status);
+        
+        
+       $query->execute();
+        
+       if(!$query = $mysqli->prepare("INSERT INTO Applications (StudentID, School_Name) VALUES (?, ?)")){
+         echo "unable to submit application";
+         exit;
+      }
+       
+      if($First_School != 'N/A'){
+      $query->bind_param("ss", $StudentID, $First_School);
+      $query->execute();
+      }
+      if($Second_School != 'N/A'){
+      $query->bind_param("ss", $StudentID, $Second_School);
+      $query->execute();
+      }
+      if($Third_School != 'N/A'){
+      $query->bind_param("ss", $StudentID, $Third_School);
+      $query->execute();
+      }
+      if($Fourth_School != 'N/A'){
+      $query->bind_param("ss", $StudentID, $Fourth_School);
+      $query->execute();
+      }
+      if($Fifth_School != 'N/A'){
+      $query->bind_param("ss", $StudentID, $Fifth_School);
+      $query->execute();
+      }
+        
+      $query->close();
+      $mysqli->close();
+    }
 }
 ?>
