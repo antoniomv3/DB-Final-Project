@@ -2,6 +2,8 @@
 **Group Members:** Tony Vazquez, Joey Bertolino, Carson Bradley, Kristyn Long
 
 ## Description
+The username and password to login as an admin are listed below!
+Username: test  Password: pass
   The purpose of this website is to gather student information for the MedOpp program committee interview and store it in a database. Students will fill out the application then the information for each student will be stored for the admin to view and update. The "Home" tab gives an overview of the application process. The "School Info" tab explains each type of medical school and provides a video at the bottom of the page on "How to choose your Medical School". The "Application" tab takes you to the applicant information form for students to fill out. The students enter their personal and school information then select up to 5 schools from a list of 148. The "Login" tab allows the admin to login and view an application master list. This list allows the admin to view, update, and delete student information throughout the application process in case a student changes their mind at any time.
 ## Schema
 finalDatabase
