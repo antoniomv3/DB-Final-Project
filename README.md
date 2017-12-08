@@ -41,3 +41,4 @@ finalDatabase
   3. **Update)** The admin can update the student information by clicking on the gear on the application master list or in the top right corner of a student's individual information page. This updates the 'Student' and 'Applications' table according to the new application submitted by the admin.
   4. **Delete)** The admin is also allowed to completely delete a student's information from the application master list by clicking on the trash can icon next to a student. This deletes the student from the 'Student' and 'Applications' table.
 ## Video Tutorial
+[![YouTube Demo](http://img.youtube.com/vi-jwNe-E82rE&feature=youtu.be/0.jpg)](https://www.youtube.com/watch?v=-jwNe-E82rE&feature=youtu.be)
