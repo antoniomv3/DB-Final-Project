@@ -8,7 +8,7 @@ class finalView{
    }
    
    public function pageView($source, $formOptions, $logStatus, $tableData, $url, $studentData, $studentSchools){
-   //This function constructs the page based on the values passed from the controller. If $formOptions isn't empty, the form is going to be inserted, so this first call completes the form data with the $formOptions string containing the schools. The login/admin button is inserted based on the value of $logStatus. $html is then created containing all of the page data, with certain parts being filled in by the variables below based on the $source value. $html is then returned to the controller to be printed.
+   //This function constructs the page based on the values passed from the controller. If $formOptions isn't empty, the form is going to be inserted, so this first call completes the form data with the $formOptions string containing the schools. The login/admin button is inserted based on the value of $logStatus. Table and student data are also populated if needed. $html is then created containing all of the page data, with certain parts being filled in by the variables below based on the $source value. $html is then returned to the controller to be printed. NOTE: The bootstrap modal div is modelled after examples on the bootstrap site. Icons are provided via Open Iconic.
       if($source === 'formContent'){
          $this->createForm($formOptions, $studentData, $studentSchools); 
       }
@@ -87,8 +87,6 @@ EOT;
    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-   
-   
    private function createForm($formOptions, $studentData, $studentSchools){
    //This function adds the form options, finishing the $formContent source so it can be inserted completed.   
       
@@ -313,13 +311,19 @@ EOT;
       return $navBarData;
    }
    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
    private function addTableData($tableData) {
+   //This function adds the table data into the page.
       $this->viewContent .= $tableData;
       $this->viewContent .= '</tbody></table>
       <div class="hiddenSubmitDiv"></div>';
    }
    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
    private function createStudentData($studentData, $studentSchools){
+   //This function constructs the student form page.
       $this->studentContent .= '<div><h2><span id="innerName">' .$studentData['First_Name']. ' ' .$studentData['Last_Name']. '</span><span id="formSpan"><a class="backIcon" href="#"><img class="iconBorder" src="Images/open-iconic/png/arrow-circle-left-4x.png" alt="Return Icon"></a><a class="editIconInner" href="#"><img class="iconBorder" src="Images/open-iconic/png/cog-4x.png" alt="Edit Icon"></a><a class="deleteIconInner" href="#"><img class="iconBorder" src="Images/open-iconic/png/trash-4x.png" alt="Return Icon"></a></span></h2></div><hr>';
       
       $this->studentContent .= 
@@ -420,7 +424,10 @@ EOT;
    <div class="hiddenSubmitDiv"></div>';
    }
    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
    private function createLoginContent(){
+   //This function creates the login page, and inserts an error if there was a failed login.
       if($_SESSION['logError'] === "Yes") $this->loginContent .= '<h4 class="red">Login Failed, Try Again!</h4>';
       $this->loginContent .= '
       <form action="index.php" method="post">
@@ -436,6 +443,7 @@ EOT;
       <button type="submit" class="btn btn-default">Submit</button>
       </form>';
    }
+   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
    var $homeContent = 
@@ -460,6 +468,8 @@ EOT;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
    var $loginContent = '<h2 class="center">Please Sign In</h2>';
+   
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    
    var $unloggedContent = 
 '<br><br><h2 class="center">Sorry!</h2>
@@ -528,8 +538,9 @@ EOT;
    </thead>
    <tbody>';
    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+   
    var $studentContent = '';
    
 }
- 
 ?>
